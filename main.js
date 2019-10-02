@@ -36,7 +36,7 @@ dscl.on("message", (message)=> {
           Message : ${message.createdTimestamp}ms`)
         })
 
-    if (message.content.startsWith(`${prefix}help`)) {
+    if (cmd === `${prefix}help`) {
         var InfoEmbed = new Discord.RichEmbed()
             .setColor("#2fce64")
             .setTitle(`Naesungbot Help Page`)
@@ -59,11 +59,11 @@ dscl.on("message", (message)=> {
         return message.channel.send(serverebed);
 
     }
-    if (message.content.startsWith(`${prefix}uptime`)) {
+    if (cmd === `${prefix}uptime`) {
         message.channel.send(Embed.uptime(client))
     }
 
-    if (message.content.startsWith(`${prefix}userinfo1`)) {
+    if (cmd === `${prefix}userinfo1`) {
         let embed = new Discord.RichEmbed();
         embed.setAuthor(`User Information`)
         embed.setColor('#1e90ff')
@@ -94,114 +94,90 @@ dscl.on("message", (message)=> {
 
     }
 
-    if (message.content.startsWith(`${prefix}kick`)) {
-
+    if (cmd ===`${prefix}kick`) {
         const user = message.mentions.users.first();
-
         if (user) {
-
             const member = message.guild.member(user);
-
             if (member) {
-
                 member.kick('당신은 이 서버의 규칙을 어기셨으므로 관리자의 결정에 따라 강퇴 되셨습니다.').then(() => {
-
                     message.reply(`${user.tag}이/가 성공적으로 추방되었습니다.`);
                 }).catch(err => {
-
                     message.reply('해당 유저가 저의 권한보다 높거나 같기 때문에 강퇴를 시킬 수 없습니다.');
-
                     console.error(err);
                 });
             } else {
-
                 message.reply('해당 유저가 이 디스코드 방에 없습니다!');
             }
-
         } else {
             message.reply('당신은 해당 유저를 강퇴시킬 권한이 없습니다.');
         }
     }
 
-    if (message.content.startsWith(`${prefix}ban`)) {
-
+    if (cmd === `${prefix}ban`) {
         const user = message.mentions.users.first();
-
         if (user) {
-
             const member = message.guild.member(user);
-
             if (member) {
-
                 member.ban({
                     reason: '당신은 관리자의 결정에 따라 밴이 되셨습니다.',
                 }).then(() => {
-
                     message.reply(`${user.tag}이/가 성공적으로 밴되었습니다.`);
                 }).catch(err => {
-
                     message.reply('해당 유저가 저의 권한보다 높거나 같기 때문에 밴을 시킬 수 없습니다.');
-
                     console.error(err);
                 });
             } else {
-
                 message.reply('해당 유저가 이 디스코드 방에 없습니다!');
             }
         } else {
-
             message.reply('당신은 해당 유저를 밴시킬 권한이 없습니다.');
         }
     }
 
-    if (message.content.startsWith(`${prefix}site`)) {
+    if (cmd === `${prefix}homepage`) {
         message.channel.send("https://naesung.xyz")
 
     }
-    if (message.content.startsWith(`${prefix}prefix`)) {
+    if (cmd === `${prefix}prefix`) {
         message.channel.send(choose(message.content.replace(`${prefix}prefix`, 'n!'), client))
 
     }
+    //대신 말해주기//
     let messageArray = message.content.split(" ");
     let args = messageArray.slice(1);
-    if (message.content.startsWith(`${prefix}say`)) {
+    if (cmd === `${prefix}say`) {
 
         const 말 = args.join(" ");
         message.delete().catch();
         message.channel.send(말);
     }
-    if (message.content.startsWith(`${prefix}youtube`)) {
+    
+    //유튜브
+    if (cmd === `${prefix}youtube`) {
         let youtube = args.slice(0).join('+');
-
         let link = `https://www.youtube.com/results?search_query=` + youtube;
         if (!youtube) return message.reply(`Please enter a keyword.`)
         if (!link) return message.reply("Please enter a keyword, no a link.")
         let embed = new Discord.RichEmbed()
-
-
             .setColor("RED")
-
             .setTimestamp()
-
             .addField('Action:', 'Searching on youtube')
-
             .addField("Word:", `${args.slice(0).join(' ')}`)
-
             .addField('Link:', `${link}`)
-
             .setFooter("Your avatar", message.author.avatarURL);
-
         message.channel.send(embed);
     }
 
-    if(message.content.startsWith(`${prefix}saye`)){
+    //고급지게 따라해보기
+    if(cmd === `${prefix}saye`){
         var code = args.join(" ");
         var embed = new Discord.RichEmbed()
             .setDescription(`${code}`)
         message.channel.send(embed)
     }
 
-    if (message.content.startsWith(`${prefix}serverlist`)) {
+    //서버리스트 고급지게 출력해보자
+    if (cmd === `${prefix}serverlist`) {
         let bicon = bot.user.displayAvatarURL;
         let string = '';
         bot.guilds.forEach(guild => {
@@ -216,27 +192,23 @@ dscl.on("message", (message)=> {
         message.channel.send(botembed);
     }
 
+    //크레딧 간지나게 뽑아보기
     if(message.content.startsWith(`${prefix}credit`)) {
         let pages = ['Naesungbot | The standard of bot  Thank you for using this bot.', '자', '음악은 국경이 없다.', '우리는 그 숙제라는 천적에서 벗어나 자유를 찾아야 한다...', '고민하고 좌절한다고 모든 일이 풀리는 것은 `아니다.` `행동하자.` `실천하자.` 그래야 변화가 온다', '하늘은 언제나 아름답다. 언어도 그렇다.', '남에게 자신이 할일을 떠넘기는 사람은 무책임한 행동이다', '권력남용은 어디서나 심각하다', '나는 로리콘이 아니다. 단지 로리를 좋아할뿐'];
         let page = 1;
-
         var embed = new Discord.RichEmbed()
             .setFooter(`Page ${page} of ${pages.length}`)
             .setDescription(pages[page - 1])
-
         message.channel.stopTyping();
         message.channel.send(embed).then(message => {
-
             message.react('⏪').then(r => {
                 message.react('⏩')
-
                 const backwardsFilter = (reaction, user) => reaction.emoji.name === '⏪' && user.id === message.author.id;
                 const forwardsFilter = (reaction, user) => reaction.emoji.name === '⏩' && user.id === message.author.id;
                 // clearReactions()
                 const backwards = message.createReactionCollector(backwardsFilter, {time: 60000});
                 const forwards = message.createReactionCollector(forwardsFilter, {time: 60000});
                 const stop = message.createReactionCollector(stopFilter);
-
                 backwards.on('collect', r => {
                     if (page === 1) return;
                     page--;
@@ -244,7 +216,6 @@ dscl.on("message", (message)=> {
                     embed.setFooter(`Page ${page} of ${pages.length}`);
                     message.edit(embed)
                 })
-
                 forwards.on('collect', r => {
                     if (page === pages.length) return;
                     page++;
@@ -252,135 +223,74 @@ dscl.on("message", (message)=> {
                     embed.setFooter(`Page ${page} of ${pages.length}`);
                     message.edit(embed)
                 })
-
             })
-
-
         })
     }
 
-    if (message.content.startsWith(`${prefix}clear`)) {
-
+    //지우기
+    if (cmd ===`${prefix}delete`) {
         if (!args[0]) return message.reply("숫자를 써주세요");
-
         message.channel.bulkDelete(args[0]).then(() => {
-
             reply(message, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(message => message.delete(2000));
-
         });
-
     }
 
+    //차단 해제
     if (message.content.startsWith(`${prefix}unban`)) {
-
         if (!message.member.hasPermission("BAN_MEMBERS")) {
-
             reply(message, '권한이 없습니다!');
-
             return;
-
         }
-
         if (args[0] === "help") {
-
             reply(message, `: ${prefix}언밴 유저맨션 사유`);
-
             return;
-
         }
-
         let unbUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-
         if (!unbUser) return errors.cantfindUser(message.channel);
-
         if (unbUser.id === client.user.id) return errors.botuser(message);
-
         let unbReason = args.join(" ").slice(22);
-
         if (!unbReason) return errors.noReason(message.channel);
-
-
-
         let unbanEmbed = new Discord.RichEmbed()
-
             .setDescription("언밴")
-
             .setColor(`${config.color}`)
-
             .addField("언밴 유저", `${unbUser} 와 아이디 ${unbUser.id}`)
-
             .addField("언밴한 유저", `<@${message.author.id}> 와 아이디 ${message.author.id}`)
-
             .addField("시간", message.createdAt)
-
-            .addField("사유", unbReason);
-
-
-
+            .addField("사유", unbReason)
         message.guild.unban(unbUser);
-
         reply(message, unbanEmbed);
-
     }
 
-
-
+    //유저정보
     if (message.content.startsWith(`${prefix}userinfo`)) {
-
         let embed = new Discord.RichEmbed()
-
             .setAuthor(`User Information`)
-
             .setColor('#1e90ff')
-
             .setAuthor(message.author.username)
-
             .setDescription(`${message.author.username}님의 정보입니다!`)
-
             .setThumbnail(message.author.displayAvatarURL)
-
             .addField('Name:', ` ${message.author.username}#${message.author.discriminator} `)
-
             .addField('ID:', `${message.author.id}`)
-
             .addField('Creation date:', message.author.createdAt);
-
         message.channel.send(embed);
-
     }
 
-
-
+    //서버정보
     if (message.content.startsWith(`${prefix}serverinfo`)) {
-
         let sicon = message.guild.iconURL;
-
         let serverembed = new Discord.RichEmbed()
-
             .setDescription("Server Information")
-
             .setColor("#1e90ff")
-
             .setThumbnail(sicon)
-
             .addField("Server Name", message.guild.name)
-
             .addField("Created On", message.guild.createdAt)
-
             .addField("You Joined", message.member.joinedAt)
-
             .addField("Total Members", message.guild.memberCount)
-
             .addField("Roles", message.guild.roles)
-
             .addField("Owner", message.guild.owner)
-
             .addField("Channel", message.guild.channels / message.guild.voiceChannel)
-
             .addField("ID", message.guild.id);
-
         message.channel.send(serverembed);
-
     }
 
     if (message.content.startsWith(`${prefix}unban`)) {
