@@ -6,7 +6,7 @@ const choose = require('./choose.js');
 const dscl = new Discord.Client();
 const client = new Discord.Client();
 const bot = new Discord.Client();
-let statuses = [`Operating!`, `Type n!help`, `Inquire to Naesung#5882`, `Refers to https://naesung.xyz`]
+let statuses = [`Operating!`, `Type n!help`, `Inquire to minseo0388#1551`, `Refers to https://naesung.xyz/NaesungbotExtraLite`]
 
 
 
